@@ -1,0 +1,19 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>All Pages</h1>
+
+    <ul>
+        {% for entry in entries %}
+            <li>
+                <a href="{% url 'search' q=entry %}" style="color: rgb(19, 19, 19);">{{ entry }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

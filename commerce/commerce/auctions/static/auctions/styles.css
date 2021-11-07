@@ -1,0 +1,10 @@
+body {
+    padding: 10px;
+}
+
+.listingg {
+    align-self: start;
+    border: rgb(116, 115, 115);
+    color: brown;
+    background-color: cornflowerblue;
+}

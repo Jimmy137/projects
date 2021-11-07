@@ -1,0 +1,61 @@
+{% extends "auctions/layout.html" %}
+{% load static %} 
+{% block body %}
+{% if request.user == user %}
+<h1 style="margin-bottom: 20px;">Your Watchlist, <small>{{ user.username }}</small>:</h1>
+<ul class="list-group">
+        
+    {% for l in listings %}
+    
+     <div  style="margin-top: 20px; border-style: solid; border-color: rgb(182, 181, 182); border-width: 1px; height: 200px; display: flex;
+     flex-wrap: wrap;
+     align-content: center;
+   ">
+        {% if l.photo %}
+        
+         <img src="{{ l.photo }}" width="200px" height="200px" style="max-width: 100%; max-height: 100%; 
+         border-right : solid; border-color: rgb(182, 181, 182); border-width: 1px;">
+        {% else %}
+        <div style="border-right : solid; border-color: rgb(182, 181, 182); border-width: 1px; width: 200px; height: 200px; background-color: thistle; align-content: center; padding: 10px; "> <h4 style="margin-top: 70px; margin-left: 35px;">No photo</h4> </div>
+        {% endif %}
+            <div style="position: relative; left: 20px; ;">
+            <a href="{% url 'list' l.id%}" style="display: block; margin-bottom: 10px; margin-left: -3px; font-size: 35px; font-weight: bold; color: rgb(33, 37, 41);"> 
+                {{ l.title.capitalize }} </a>
+                <div style="height: 50px;"> <h5> {{ l.discription }} </h5> </div>
+            {% if not l.price %}
+            <strong style="margin-bottom: 10; margin-top: 10;">Price:</strong> {{ l.initialbid }} $
+            {% endif %}
+
+            {% for b in bids %}
+                 {% if b.listing == l %}
+                     {% if b.value > l.initialbid %}
+                         <strong style="margin-bottom: 10; margin-top: 10;">Price:</strong> {{ b.value }} $
+                    
+                     {% endif %}
+                 {% endif %}
+            {% endfor %}
+            
+            {% for c in ctgs %}
+            {% if l.category == c %}
+                 {% if l.categoty in empty %}
+                     <h6> No category </h6>
+                 {% else %}
+                     <h6 style="font-size: 15px;"> <strong>Category: </strong><a href="{% url 'category' c.id %}" style="margin-top: 150px;">{{l.category}}</a> </h6>
+                 {% endif %}
+            {% endif %}
+            {% endfor %}
+            <h6 style="font-weight: 400; color: rgb(99, 98, 98);">Created on {{l.created}} </h6>
+        </div>
+        {% if not l.active %}  
+        <h5 style=" color: rgb(214, 38, 38); position:absolute; right: 20px;">Sold/Closed</h5>
+        {% endif %} 
+            
+     </div>
+     
+     {% empty %}
+     <h5 style="margin-bottom: 20px;">There are no listings in your watch list.</h5>
+    {% endfor %}
+</ul>
+
+{% endif %}
+{% endblock %}

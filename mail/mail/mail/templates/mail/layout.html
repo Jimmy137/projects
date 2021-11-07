@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Mail{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'mail/styles.css' %}">
+        {% block script %}
+        {% endblock %}
+        <style>
+          #r{
+              width: fit-content;
+              position: absolute;
+              top: 420px;
+              left: 0;
+          }
+          .noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+          .body{
+            white-space: pre-wrap;
+          }
+          
+          .div{
+              position: relative;
+          }
+           .arc{
+               position: absolute;
+               right: 0px;
+               
+               width: 15%;
+               height: 100%;
+               
+               z-index: 1;
+               background-color: DodgerBlue;
+               border-bottom: 1px solid rgb(240, 240, 240);
+               border-top: none;
+               border-right: none;
+               border-left: none;
+               outline: none;
+
+               color: white;
+               padding: 6px 7px;
+               font-size: 14px;
+               cursor: pointer;
+               
+           } 
+           .arc:focus, .arc:active {
+            outline: none;
+            border: 1px solid white;
+           }
+           .arc:hover{
+            background-color: white;
+            color: DodgerBlue;
+           }
+           
+            @keyframes hide{
+                0% {
+                      opacity: 1;
+                      height: 100%;
+                      padding: 15px;
+                      margin-bottom: 5px;
+                      margin-top: 5px;
+                      
+                   }
+
+              
+
+                90% {
+                    opacity: 0;
+                    height: 100%;
+                    padding: 15px;
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                    
+                }
+
+                100% {
+                    opacity: 0;
+                    height: 0%;
+                    padding: 0;
+                    margin-bottom: 0;
+                    margin-top: 0;
+
+                }
+            }
+            
+            #m{
+                animation-name: hide;
+                animation-duration: 2s;
+                animation-fill-mode: forwards;
+                
+                
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>

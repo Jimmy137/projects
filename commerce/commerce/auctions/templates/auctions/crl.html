@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+{% load static %} 
+{% block body %}
+
+<h2>Create Listing: </h2>
+<br>
+{% if user.is_authenticated %}
+
+
+    
+<form action="{% url 'crl' %}" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+       <label for="title">Title: </label> 
+       <input class="form-control" maxlength="64" type="text" name="title" id="title" required>
+    </div>
+
+    <div class="form-group">
+        <label for="content">Discription: </label>
+        <textarea class="form-control" maxlength="300" rows="3" name="content" id="content" required></textarea>
+        
+    </div>
+
+    <div class="form-group">
+        <label for ="img"> Photo's url (optional): </label>
+        <input class="form-control" type="url" id="img" name="img" >
+    </div>
+
+    <div class="form-group">
+        <label for="initialbid">Initial Bid: </label> 
+        <input class="form-control"  type="number" step=0.1  min=1.0 name="initialbid" id="initialbid"
+        style="width: auto;" required>
+     </div>
+     <div class="form-group">
+        <label for="ctg">Category (optional): </label> 
+        <input class="form-control" maxlength="15" type="text" name="ctg" id="ctg"
+        style="width: auto;">
+     </div>
+     <input class="btn btn-primary" type="submit" value="Create">
+
+</form>
+{% else %}
+      <div> You have to <a  href="{% url 'login' %}">Log In</a> first </div>
+{% endif %}
+    
+
+
+{% endblock %}

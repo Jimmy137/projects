@@ -1,0 +1,144 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+
+<div style="margin: 50px;">
+<div style=" margin-left: 20px;">
+    <h2 style="font-size: 50px;"> {{ list.title.capitalize }} </h2>
+{% if message %}
+<div class="alert alert-success" role="alert">
+    {{message}}
+  </div>
+{% endif %}
+{% if pm %}
+<div class="alert alert-primary" role="alert">
+    {{pm}}
+  </div>
+{% endif %}
+
+{% if rm %}
+<div class="alert alert-warning" role="alert">
+    {{rm}}
+  </div>
+{% endif %}
+
+{% if sold %}
+<div class="alert alert-info" role="alert">
+    {{sold}} by <strong>{{ list.price}}</strong> $
+  </div>
+{% endif %}
+
+{% if closed %}
+<div class="alert alert-info" role="alert">
+    {{closed}} 
+  </div>
+{% endif %}
+
+</div>
+<div style=" position: relative; top: 20px; left: 20px; width: 850px; background-color: rgb(243, 242, 242);">
+    <div style="height: 150px; width: 550px; ">
+        <h4 style="margin-bottom: 15px;"><strong>Discription:</strong></h4>
+        <h5> {{ list.discription }}</h5>
+    </div>
+    <div style="height: 200px; width: 550px; ">
+    {% if not list.price %}
+    <h5> <strong>Current price: </strong>{{ list.initialbid }} $</h5>
+    {% else %}
+    <h5> <strong>Current price: </strong>{{ list.price }} $</h5>
+    {% endif %}
+
+
+    {% if user.is_authenticated %}
+    {% if list.active %}
+    <div class="form-group"style="margin-top:20px; height: 155px; width: 550 px;">
+        <form action="{% url 'bid' list.id %}" method="POST">
+            {% csrf_token %}
+        <div class="form-group">
+            {% if not list.price %}
+            <input class="form-control" type="number" min="{{ m }}" name="bid" step=0.1 placeholder="Bid on listing!" style="width: auto;" required>
+            {% else %}
+            <input class="form-control" type="number" min="{{ mm }}" name = "bid" step=0.1 placeholder="Bid on listing!" style="width: auto;" required>
+            {% endif %}
+        </div>
+        <input class="btn btn-success" type="submit" value="Submit">
+        </form>
+        <br>
+        {% if list in ww %}
+        <form  action="{% url 'remove' list.id %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <input class="btn btn-danger" type="submit" value="Remove from watch list">
+            </div>
+        </form>
+        {% else %}
+        <form action="{% url 'addwatch' list.id %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <input class="btn btn-primary" type="submit" value="Add to watch list">
+            </div>
+        </form>
+         {% endif %}
+        {% if request.user == list.owner %}
+        <form action="{% url 'close' list.id %}" method="POST">
+            {% csrf_token %}
+            <div style="color: crimson;"> Be careful before clicking on this <strong>close</strong> button </div>
+            <div style="position: absolute; right: 350px; bottom: 2px;">
+                <input class="btn btn-outline-danger" type="submit" value="Close listing">
+            </div>
+        </form>
+        {% endif %}
+    </div>
+    {% else %}
+    <br>
+    {% if request.user == list.winner %}
+    <div class="alert alert-success" role="alert">
+        Congartulations! You've won the listing by <strong>{{ list.price }}</strong> $
+      </div>
+    {% else %}
+    <div style="color: crimson;"><h5>The listing has been sold!</h5></div>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+
+    <div style ="position: absolute; top: 400px;">
+    <div style="border-style: solid; border-top-color: rgb(80, 74, 85); border-left-color: transparent; border-right-color: transparent; border-bottom-color: transparent; width: 550px; ">
+    <h4 style="margin-bottom: 50px; font-size:x-large;"> <strong>Comments:</strong> </h4>
+    <ul>
+    {% for c in comments %}
+    <div style=" background-color:rgb(239, 244, 248); color: ; position: relative; left: -40px; margin-top: 20px;" >
+        <h5> {{ c.content }} </h5>
+        <div>
+       <small> By <strong> {{ c.commenter }} </strong> </small> 
+       <small> On {{ c.created }} </small> 
+        </div>
+    </div>
+    {% empty %}
+    <h5> No comments yet.</h5>
+    {% endfor %}
+</ul>
+</div>
+
+
+{% if user.is_authenticated %}
+<form action="{% url 'comment' list.id %}" method="POST" style="position: static; top: 900px;">
+    {% csrf_token %}
+<div class="form-group" style="margin-top: 20px;">
+    
+    <textarea class="form-control" maxlength="300" rows="3" name="content" id="content" placeholder="Add your comment here..." required></textarea>
+    <input class="btn btn-primary" type="submit" value="Post" style="margin-top: 10px;">
+    
+</div> 
+</form>
+{% endif %}
+</div>
+
+ {% if list.photo %}
+ <div style="position: static;">
+    <img src="{{ list.photo }}" width="auto" height="auto" 
+    style="position: absolute; right: 0px; top: 0px; max-width: 350px; max-height: 350px; 
+    border-style: solid; border-color: rgb(182, 181, 182); border-width: 0.5px;
+    ">
+ </div>
+ {% endif %}
+</div>
+</div>
+{% endblock %}

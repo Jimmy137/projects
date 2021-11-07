@@ -1,0 +1,20 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search Results
+{% endblock %}
+
+{% block body %}
+    <h1>Search result of "{{ q }}":</h1>
+
+    <ul>
+        {% for result in results %}
+            <li>
+                <a href="{% url 'search' q=result %}" style="color: rgb(19, 19, 19);">{{ result }}
+                </a>
+            </li>
+        {% endfor %}
+       
+    </ul>
+
+{% endblock %}
